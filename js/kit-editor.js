@@ -87,6 +87,9 @@
       card.classList.remove("dragging");
       draggedCard = null;
       saveOrder(grid);
+      // Suppress the click that follows a drag so it doesn't also open the product link.
+      card.dataset.justDragged = "true";
+      setTimeout(function () { card.dataset.justDragged = ""; }, 0);
     });
 
     grid.addEventListener("dragover", function (e) {
@@ -121,6 +124,10 @@
         var card = input.closest(".item-card");
         localStorage.setItem(qtyKey(card.dataset.section, card.dataset.item), input.value);
       });
+
+      input.addEventListener("click", function (e) {
+        e.stopPropagation();
+      });
     });
 
     grid.querySelectorAll(".item-shop-link").forEach(function (link) {
@@ -132,7 +139,22 @@
       });
       link.addEventListener("click", function (e) {
         if (link.getAttribute("href") === "#") e.preventDefault();
+        // Let the anchor's own target="_blank" navigation happen; don't also
+        // trigger the card-level click-to-open handler below.
+        e.stopPropagation();
       });
+    });
+
+    // Clicking anywhere else on the card opens its product link in a new tab.
+    grid.addEventListener("click", function (e) {
+      var card = e.target.closest(".item-card");
+      if (!card) return;
+      if (e.target.closest(".qty-input") || e.target.closest(".item-shop-link")) return;
+      if (card.dataset.justDragged === "true") return;
+      var link = card.querySelector(".item-shop-link");
+      if (link && link.getAttribute("href") && link.getAttribute("href") !== "#") {
+        window.open(link.href, "_blank", "noopener");
+      }
     });
   }
 
