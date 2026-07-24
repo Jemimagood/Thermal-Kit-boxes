@@ -36,6 +36,8 @@ img { max-width: 100%; display: block; }
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px 24px;
   padding: 16px 32px;
   background: #0a1a3c;
   color: #fff;
@@ -48,6 +50,7 @@ img { max-width: 100%; display: block; }
   font-weight: 700;
   font-size: 1.1rem;
   letter-spacing: 0.02em;
+  white-space: nowrap;
 }
 
 .site-header .brand .logo-mark {
@@ -71,10 +74,16 @@ img { max-width: 100%; display: block; }
   letter-spacing: 0.08em;
 }
 
+.site-header nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 22px;
+}
+
 .site-header nav a {
-  margin-left: 22px;
   font-size: 0.9rem;
   color: #cfd8ee;
+  white-space: nowrap;
 }
 
 .site-header nav a:hover { color: #fff; }
@@ -420,6 +429,5 @@ body.furnace .site-footer { background: var(--furnace-dark); }
 
 @media (max-width: 640px) {
   .hero h1 { font-size: 2.1rem; }
-  .site-header { flex-direction: column; gap: 12px; }
-  .site-header nav a { margin: 0 10px; }
+  .site-header { flex-direction: column; align-items: flex-start; gap: 12px; }
 }
